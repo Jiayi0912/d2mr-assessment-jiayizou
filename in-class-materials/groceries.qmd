@@ -276,7 +276,11 @@ As an exercise, revise the conditional (or start from scratch!) to bring home th
 #| label: epilogue-revised-function
 
 # Write a function that does exactly the same thing as shop3, but with less redundancy
-
+shop3 <- function(milk, eggs) {
+    n.milk <- ifelse(milk, 1, 0) # if there is milk, then buy 1 gallon, otherwise take 0
+    n.eggs <- ifelse(eggs, 6, 0) # if there are eggs, then buy 6 eggs, otherwise take 0
+    paste0("I bought ", n.milk, " milk and ", n.eggs, " eggs.")
+}
 ```
 
 If you want, you can take it further. What if the partner asks for a carton of milk and a dozen eggs? What if they ask for a carton of milk and a dozen eggs, but only if the store has both? What if they ask for a carton of milk and a dozen eggs, but only if the store has both, and if the store has neither, they ask for a loaf of bread?
