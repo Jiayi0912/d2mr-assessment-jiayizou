@@ -47,7 +47,7 @@ Read in and inspect the messy dataset `messy-midwest.csv`.
 # Read in messy-midwest.csv
 messy.midwest <- read_csv(
   ########################################
-  "messy-midwest.csv", ## <-- THIS IS THE ONLY THING IN THIS CHUNK YOU CAN CHANGE IF NECESSARY
+  "./messy-midwest.csv", ## <-- THIS IS THE ONLY THING IN THIS CHUNK YOU CAN CHANGE IF NECESSARY
   ########################################
   trim_ws = FALSE, name_repair = "minimal", col_types = cols(.default = col_character()))
 
@@ -83,8 +83,19 @@ View(midwest)
 QUESTIONS:
 
 1. What are the differences between the messy dataset and the original midwest dataset?
-
 <!-- answer below -->
+```{r include=FALSE}
+#| label: compare-datasets
+# Compare the messy and original midwest datasets
+all.equal(messy.midwest, midwest)
+```
+Using the `all.equal()` function, we can see a total of `r length(all.equal(messy.midwest, midwest))` differences between the two datasets. Specifically, compared to the original dataset, in the messy midwest dataset:
+- Column order is different, and the messy dataset includes an extra variable.
+- 21 column names are messy, including problems of capitalization, extra spaces, typos, and adding units.
+- Data types are all stored as character or externalptr, while many of them are numeric in the original dataset.
+- Values in the county and state column have lots of problems (extra spaces, capitalization, typos, etc.)
+- The first 27 columns include missing or extra rows.
+- Numbers aren't rounded to the same number of decimal places
 
 2. What are the biggest issues you need to address in cleaning?
 
