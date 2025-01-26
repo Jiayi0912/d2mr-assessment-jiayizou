@@ -118,6 +118,7 @@ Using the `all.equal` ang `daff` function, we can see a total of `r length(all.e
 3. Are there any differences between the messy dataset and the original dataset that you do not need or want to address in cleaning? If so, why (not)?
 
 <!-- answer below -->
+- Replacing data in "Population Density" with "Population per Sq Mile" is better than preserving the original data, since the latter uses consistent calculation unit and reduces misunderstanding.
 - Changing the State data type to factor instead of character is more useful when generating regression or ggplot. Since the column only contains 5 variables ("IL", "IN", "MI", "OH", "WI"), converting character to factor helps to analyse data by state/area.
 - For different numeric variables, the number of decimal places is also different. For variables that stored percentage of certain population, round numbers to 3 decimal places is enough to preserve accuracy of the data. For population density, rounding numbers to 1 decimal place makes sense statistically.
 
