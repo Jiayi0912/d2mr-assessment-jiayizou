@@ -83,23 +83,37 @@ View(midwest)
 QUESTIONS:
 
 1. What are the differences between the messy dataset and the original midwest dataset?
+
 <!-- answer below -->
 ```{r include=FALSE}
 #| label: compare-datasets
-# Compare the messy and original midwest datasets
+# Use all.equal to compare the messy and original midwest datasets
 all.equal(messy.midwest, midwest)
+
+# using daff to compare
+library(daff)
+
+diff_data(messy.midwest, midwest)
+render_diff(diff_data(messy.midwest, midwest))
 ```
-Using the `all.equal()` function, we can see a total of `r length(all.equal(messy.midwest, midwest))` differences between the two datasets. Specifically, compared to the original dataset, in the messy midwest dataset:
-- Column order is different, and the messy dataset includes an extra variable.
-- 21 column names are messy, including problems of capitalization, extra spaces, typos, and adding units.
-- Data types are all stored as character or externalptr, while many of them are numeric in the original dataset.
-- Values in the county and state column have lots of problems (extra spaces, capitalization, typos, etc.)
-- The first 27 columns include missing or extra rows.
+Using the `all.equal` ang `daff` function, we can see a total of `r length(all.equal(messy.midwest, midwest))` differences between the two datasets. Specifically, compared to the original dataset, in the messy midwest dataset:
+- The messy dataset has two missing variables (percblack and percwhite) and a duplicate variable (Population per Sq Mile, which is equal to Population Density)
+- Column order is different
+- 21 column names are messy, including problems of capitalization, extra spaces, typos, and adding units
+- Data types are all stored as character, while many of them are numeric in the original dataset
+- Values in the County and State column have lots of problems (extra spaces, capitalization, typos, etc)
+- Data in the first 27 columns mismatches
 - Numbers aren't rounded to the same number of decimal places
 
 2. What are the biggest issues you need to address in cleaning?
 
 <!-- answer below -->
+- Deleting duplicate column and adding the missing columns
+- Rename columns
+- Reorder columns
+- Change data types: except for County and State columns, change Category column to factor, and other columns to numeric
+- Correct values in County and State columns: remove extra spaces, fix typos, ensure consistent capitalization
+- Round numbers to the same number of decimal places (3)
 
 3. Are there any differences between the messy dataset and the original dataset that you do not need or want to address in cleaning? If so, why (not)?
 
