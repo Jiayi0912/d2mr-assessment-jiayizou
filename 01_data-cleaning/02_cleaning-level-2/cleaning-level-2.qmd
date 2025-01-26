@@ -113,11 +113,14 @@ Using the `all.equal` ang `daff` function, we can see a total of `r length(all.e
 - Reorder columns
 - Change data types: except for County and State columns, change Category column to factor, and other columns to numeric
 - Correct values in County and State columns: remove extra spaces, fix typos, ensure consistent capitalization
-- Round numbers to the same number of decimal places (3)
+- Round numbers to the same number of decimal places
 
 3. Are there any differences between the messy dataset and the original dataset that you do not need or want to address in cleaning? If so, why (not)?
 
 <!-- answer below -->
+- Change column names into a form that can seperate poppulation/percentage with the variable type (e.g. change "Population Density" to "Pop.Density" rather than "popdensity" in the original dataset). In this case it's more explicit for researchers to run data analysis and to avoid confusion between "pop" and "perc".
+- For different numeric variables, the number of decimal places is also different. For variables that stored percentage of certain population, round numbers to 3 decimal places is enough to preserve accuracy of the data. For population density, rounding numbers to 1 decimal place makes sense statistically.
+
 
 4. Are there additional cleaning tasks you would like to perform beyond matching the original dataset? If so, what are they and why do you think they are important?
 
