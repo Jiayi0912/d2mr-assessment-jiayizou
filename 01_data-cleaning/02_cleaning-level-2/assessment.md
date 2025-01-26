@@ -17,11 +17,11 @@ CNetID: 12434890
 
 Section: 01_data-cleaning
 
-Mini-project title: Data cleaning level-2
+Mini-project title: Level 2 Data Cleaning: Clean the midwest Dataset
 
 Submission date:
 
-Project GitHub subdirectory URL: https://github.com/Jiayi0912/d2mr-assessment-jiayizou/01_data-cleaning/02_cleaning-level-2
+Project GitHub subdirectory URL: https://github.com/Jiayi0912/d2mr-assessment-jiayizou/tree/d23968f53b1e383218462ce154b2db2118b948dd/01_data-cleaning/02_cleaning-level-2
 
 URL or instructions to access additional materials, if needed: 
 
