@@ -108,17 +108,17 @@ Using the `all.equal` ang `daff` function, we can see a total of `r length(all.e
 2. What are the biggest issues you need to address in cleaning?
 
 <!-- answer below -->
-- Deleting duplicate column and adding the missing columns
+- Deleting the duplicate column and adding the missing columns
 - Rename columns
 - Reorder columns
-- Change data types: except for County and State columns, change Category column to factor, and other columns to numeric
+- Change data types: except for County, change State and Category columns to factor, and other columns to numeric
 - Correct values in County and State columns: remove extra spaces, fix typos, ensure consistent capitalization
 - Round numbers to the same number of decimal places
 
 3. Are there any differences between the messy dataset and the original dataset that you do not need or want to address in cleaning? If so, why (not)?
 
 <!-- answer below -->
-- Replacing data in "Population Density" with "Population per Sq Mile" is better than preserving the original data, since the latter uses consistent calculation unit and reduces misunderstanding.
+- Replacing data in "Population Density" with the ones in "Population per Sq Mile" is better than preserving the original data, since the latter uses consistent calculation unit and reduces misunderstanding.
 - Changing the State data type to factor instead of character is more useful when generating regression or ggplot. Since the column only contains 5 variables ("IL", "IN", "MI", "OH", "WI"), converting character to factor helps to analyse data by state/area.
 - For different numeric variables, the number of decimal places is also different. For variables that stored percentage of certain population, round numbers to 3 decimal places is enough to preserve accuracy of the data. For population density, rounding numbers to 1 decimal place makes sense statistically.
 
@@ -135,18 +135,99 @@ If you're not sure where to start, you can organize your cleaning into the follo
 
 You can additionally/alternatively construct your cleaning in a single pipeline in the last chunk.
 
+## Creating a cleaning dataset
+```{r}
+
+#| label: make-cleaning-dataset
+
+# Create a dataset to work with during the cleaning process called "clean.midwest"
+clean.midwest <- messy.midwest
+
+```
+
+
 ## Selecting, renaming, and reordering columns
 
 ```{r}
+#| label: rename-columns
+
+## Rename columns to match the original iris dataset using the select() function
+## Put them in the order of the original dataset
+clean.midwest <- messy.midwest %>%
+  select(PID, county = `C0unty Name`, state = State, area_sqm = `Area (sq miles)`, 
+         poptotal = `Total P0pulation`, popdensity_persqm = `Population per Sq Mile`, popwhite, 
+         popblack, popamerindian, popasian, popother,percamerindian = percamerindan, 
+         percasian = `Percentage Asian`, percother, popadults = `Population Over 18`, perchsd, 
+         percollege = `Percentage College`, percprof, poppovertyknown, percpovertyknown, 
+         percbelowpoverty = `Percentage Below Poverty`, percchildpoverty = percchildbelowpovert, 
+         percadultpoverty, percelderlypoverty, inmetro, category)
+
+# In this way, the duplicate column "Population Density" is deleted, because we want to preserve data in "Population per Sq Mile"
+# Current column order still misses two variables: percwhite and percblack
 
 ```
 
-## Changing data types
 
 ```{r}
 
+#| label: checkpoint-1-allequal
+
+# Inspect the current state of the dataset
+head(clean.midwest)
+
+# Use all.equal() to check if clean.iris matches iris
+all.equal(clean.midwest, midwest)
+
+```
+Now we've got `r length(all.equal(clean.midwest, midwest))` flagged differences. 
+- The biggest difference now is still the data types.
+- We should also notice the remaining problems above: two variables percwhite and percblack haven't been created yet, and they need to be inserted between popother and percamerindian to put the columns in order. But this step can only be done after we after we change data types.
+
+## Changing data types and cleaning values
+
+### Cleaning character variables: county, state, and category
+
+We start with tackling the character variables first. In question 2, we have decided to change State and Category variables into factor, and preserve County as a character variable.
+
+```{r}
+#| label: unique-county-1
+
+# Check the unique values of the County column in clean.midwest
+unique(clean.midwest$county)
+
+```
+Using the unique() function, we can see the data contains 3 types of error in general:
+- Extra spaces, both at the beginnings and ends of the values
+- Typos: "0" instead of letter "o", "1" instead of letter "l", and "3" instead of letter "e"
+- All values are in all lowercase, while everything is lower case in `midwest$county`
+
+We can primarily clean the data with these 3 patterns.
+
+```{r}
+
+#| label: clean-county-patterns
+
+# Use stringr to clean the county column
+clean.midwest <- clean.midwest %>%
+    mutate(
+        # Trim whitespace from the beginning and end of the string
+        county = str_squish(county), 
+        # Replace 0 with o, 1 with l, 3 with e
+        county = str_replace_all(county, c("0" = "o", "1" = "l", "3" = "e")),
+        # Convert to uppercase
+        county = str_to_upper(county),
+    )
 ```
 
+Now we can find the unique values that's left in the County column.
+
+```{r}
+#| label: unique-county-2
+
+# Use setdiff() to check the unique values of the County column in clean.midwest
+setdiff(clean.midwest$county, midwest$county)
+```
+No problems left in the County column!
 
 ## Mutating data
 
