@@ -175,7 +175,7 @@ clean.midwest <- messy.midwest %>%
 # Inspect the current state of the dataset
 head(clean.midwest)
 
-# Use all.equal() to check if clean.iris matches iris
+# Use all.equal() to check if clean.midwest matches midwest
 all.equal(clean.midwest, midwest)
 
 ```
@@ -187,6 +187,7 @@ Now we've got `r length(all.equal(clean.midwest, midwest))` flagged differences.
 
 ### Cleaning character variables: county, state, and category
 
+#### Cleaning county: clean values
 We start with tackling the character variables first. In question 2, we have decided to change State and Category variables into factor, and preserve County as a character variable.
 
 ```{r}
@@ -227,7 +228,104 @@ Now we can find the unique values that's left in the County column.
 # Use setdiff() to check the unique values of the County column in clean.midwest
 setdiff(clean.midwest$county, midwest$county)
 ```
-No problems left in the County column!
+No problems left in the County column! Fortunately it is already a character variable, so no further procedure is needed for now.
+
+In the next step we can deal with the State column. For State and Category column that we want to change from character to factor, we need to first clean the data value and then convert the data type.
+
+```{r}
+#| label: unique-state-1
+
+# Check the unique values of the State column in clean.midwest
+unique(clean.midwest$state)
+
+```
+We use the unique() function to check with value errors again, and find generally 3 issues:
+- Several values contain periods at the end of values
+- Inconsistent name of the same state. "Wis." and "Wisconsin" should be "WI",  "Mich." and "Michigan" should be "MI", "OHIO" and "Ohio" should be "OH", "Ind." and "Indiana" should be "IN", and "Ill." and "Illinois" should be "IL"
+- Inconsistent capitalization (all values are uppercase in midwest)
+
+These 3 problems can be solved at the same time if we directly substitute the error state name with the correct ones. Now we can conduct data cleaning on the State column.
+
+```{r}
+
+#| label: clean-state-patterns
+
+# Use stringr to clean the county column
+clean.midwest <- clean.midwest %>%
+    mutate(
+        # Replace "Wis." and "Wisconsin" with "WI" (replace "Wisconsin" because it's longer)
+        state = str_replace_all(state, "Wisconsin|Wis\\.", "WI"),
+        # Replace "Mich." and "Michigan" with "MI"
+        state = str_replace_all(state, "Michigan|Mich\\.", "MI"),
+        # Replace "OHIO" and "Ohio" with "OH"
+        state = str_replace_all(state, "OHIO|Ohio", "OH"),
+        # Replace "Ind." and "Indiana" with "IN"
+        state = str_replace_all(state, "Indiana|Ind\\.", "IN"),
+        # Replace "Ill." and "Illinois" with "IL"
+        state = str_replace_all(state, "Illinois|Ill\\.", "IL")
+    )
+```
+
+Now let's check the unique values of state again:
+```{r}
+#| label: unique-state-2
+
+unique(clean.midwest$state)
+
+```
+The State column values are ideal now. We can convert this column into a factor for later data analysis. After converting data type, state becomes a factor variable with 5 levels: "IL", "IN", "MI", "OH", and "WI".
+
+```{r}
+
+#| label: factor-state
+
+# Convert the State column to a factor
+clean.midwest <- clean.midwest %>%
+    mutate(state = factor(state))
+
+levels(clean.midwest$state)
+
+```
+
+Lastly, we can examine the unique values in the Category column.
+
+```{r}
+#| label: unique-category-1
+
+# Check the unique values of the Category column in clean.midwest
+unique(clean.midwest$category)
+
+```
+The result indicates that there are no errors in column values. We can simply convert it to a factor with 10 levels: "AAR" "AAU" "AHR" "AHU" "ALR" "ALU" "HAR" "HAU" "HHR" "HHU" "HLR" "HLU" "LAR" "LAU" "LHR" "LHU"
+
+```{r}
+
+#| label: factor-category
+
+# Convert the Category column to a factor
+clean.midwest <- clean.midwest %>%
+    mutate(category = factor(category))
+
+levels(clean.midwest$category)
+
+```
+Finally, after dealing with these three originally character variables, county, state, and category, we can once again check whether clean.midwest identifies with midwest.
+
+```{r}
+
+#| label: checkpoint-2-allequal
+
+# Inspect the current state of the dataset
+head(clean.midwest)
+
+# Use all.equal() to check if clean.midwest matches midwest
+all.equal(clean.midwest, midwest)
+
+```
+
+We can begin tackling with the rest variables containing numbers.
+
+## Cleaning numeric variables: area_sqm, popdensity_persqm, and perc~
 
 ## Mutating data
 
