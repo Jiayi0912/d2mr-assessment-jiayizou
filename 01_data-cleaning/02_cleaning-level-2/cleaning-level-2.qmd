@@ -230,6 +230,8 @@ setdiff(clean.midwest$county, midwest$county)
 ```
 No problems left in the County column! Fortunately it is already a character variable, so no further procedure is needed for now.
 
+#### Cleaning state: clean values, convert data type to factor
+
 In the next step we can deal with the State column. For State and Category column that we want to change from character to factor, we need to first clean the data value and then convert the data type.
 
 ```{r}
@@ -286,6 +288,7 @@ clean.midwest <- clean.midwest %>%
 levels(clean.midwest$state)
 
 ```
+#### Cleaning category: clean values, convert data type to factor
 
 Lastly, we can examine the unique values in the Category column.
 
@@ -325,7 +328,43 @@ all.equal(clean.midwest, midwest)
 
 We can begin tackling with the rest variables containing numbers.
 
-## Cleaning numeric variables: area_sqm, popdensity_persqm, and perc~
+## Cleaning numeric variables
+
+Based on question 1-3, our basic logic of dealing with the numeric variables (although at this point they are stored as character in the messy dataset) is:
+
+- Data types should be numeric, not character
+- Numbers not rounded to the same number of decimal places (the decimal place number should also be distinct for different numeric variables )
+
+```{r}
+
+#| label: clean-numeric-one-step
+
+clean.midwest.numeric <- clean.midwest %>%
+  # Convert variables to numeric first
+  mutate(across(c(1, 4:25), ~ parse_number(.x))) %>%
+  mutate(
+        # For area_sqm, round to 3 decimal places
+        area_sqm = round(area_sqm, 3), 
+        # For popdensity_persqm, round to 1 decimal place
+        popdensity_persqm = round(popdensity_persqm, 1),
+        # For all variables concerning population percentage, round to 3 decimal places
+        across(c(percamerindian, percasian, percother, perchsd, percollege, 
+                 percprof, percpovertyknown, percbelowpoverty, percchildpoverty, 
+                 percadultpoverty, percelderlypoverty), ~ round(.x, 3)),
+    )
+
+```
+
+Now we can compare clean.midwest with midwest again after we have conducted data cleaning on both character and numeric columns.
+
+```{r}
+
+#| label: checkpoint-3-compare
+
+all.equal(clean.midwest.numeric, midwest)
+render_diff(diff_data(clean.midwest.numeric, midwest))
+
+```
 
 ## Mutating data
 
