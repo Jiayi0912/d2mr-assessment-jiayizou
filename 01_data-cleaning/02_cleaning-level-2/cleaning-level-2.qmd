@@ -12,12 +12,12 @@ In this Level 2 Cleaning assignment, you will work with a more complex dataset a
 
 # Instructions
 
-1. If you have not already done so, pull the latest changes from the `d2mr-assessment` repository to ensure you have the most up-to-date version of the assignment files. Confirm you are working in your fork of the repository.
-2. Open `cleaning-level-2.qmd` in RStudio and follow the instructions in the Setup section below to load and inspect the (original) `midwest` dataset. 
-    - **Important:** Unlike Level 1, you will not be provided with a goal dataset to match. Instead, you will evaluate what cleaning tasks are necessary or useful *in principle*. You can reference the original `midwest` dataset, but ultimately you will need to decide what the "clean" version of the dataset should look like.
-3. Follow the guideline to identify and perform cleaning tasks on the `messy-midwest.csv` dataset.
-4. At some points in this document you may come across questions or non-coding exercises. Answer these questions in the text of this .qmd document, immediately below the question.
-5. *Optional:* Continue to follow the instructions in the assignment script to clean the dataset above and beyond matching the original. 
+1.  If you have not already done so, pull the latest changes from the `d2mr-assessment` repository to ensure you have the most up-to-date version of the assignment files. Confirm you are working in your fork of the repository.
+2.  Open `cleaning-level-2.qmd` in RStudio and follow the instructions in the Setup section below to load and inspect the (original) `midwest` dataset.
+    -   **Important:** Unlike Level 1, you will not be provided with a goal dataset to match. Instead, you will evaluate what cleaning tasks are necessary or useful *in principle*. You can reference the original `midwest` dataset, but ultimately you will need to decide what the "clean" version of the dataset should look like.
+3.  Follow the guideline to identify and perform cleaning tasks on the `messy-midwest.csv` dataset.
+4.  At some points in this document you may come across questions or non-coding exercises. Answer these questions in the text of this .qmd document, immediately below the question.
+5.  *Optional:* Continue to follow the instructions in the assignment script to clean the dataset above and beyond matching the original.
 
 # Setup
 
@@ -30,7 +30,6 @@ Run these chunks as written. Do not make changes to code except where noted if n
 library(tidyverse)
 set.seed(1234)
 ```
-
 
 ## Read in and inspect messy data
 
@@ -82,11 +81,14 @@ View(midwest)
 
 QUESTIONS:
 
-1. What are the differences between the messy dataset and the original midwest dataset?
+1.  What are the differences between the messy dataset and the original midwest dataset?
 
 <!-- answer below -->
-```{r include=FALSE}
+
+```{r }
+
 #| label: compare-datasets
+
 # Use all.equal to compare the messy and original midwest datasets
 all.equal(messy.midwest, midwest)
 
@@ -96,34 +98,29 @@ library(daff)
 diff_data(messy.midwest, midwest)
 render_diff(diff_data(messy.midwest, midwest))
 ```
-Using the `all.equal` ang `daff` function, we can see a total of `r length(all.equal(messy.midwest, midwest))` differences between the two datasets. Specifically, compared to the original dataset, in the messy midwest dataset:
-- The messy dataset has two missing variables (percblack and percwhite) and a duplicate variable (Population per Sq Mile, which is equal to Population Density)
-- Column order is different
-- 21 column names are messy, including problems of capitalization, extra spaces, typos, and adding units
-- Data types are all stored as character, while many of them are numeric in the original dataset
-- Values in the County and State column have lots of problems (extra spaces, capitalization, typos, etc)
-- Data in the first 27 columns mismatches
-- Numbers aren't rounded to the same number of decimal places
 
-2. What are the biggest issues you need to address in cleaning?
+Using the `all.equal` ang `daff` function, we can see a total of `r length(all.equal(messy.midwest, midwest))` differences between the two datasets. Specifically, compared to the original dataset, in the messy midwest dataset: - The messy dataset has two missing variables (percblack and percwhite) and a duplicate variable (Population per Sq Mile, which is equal to Population Density) - Column order is different - 21 column names are messy, including problems of capitalization, extra spaces, typos, and adding units - Data types are all stored as character, while many of them are numeric in the original dataset - Values in the County and State column have lots of problems (extra spaces, capitalization, typos, etc) - Data in the first 27 columns mismatches - Numbers aren't rounded to the same number of decimal places
+
+2.  What are the biggest issues you need to address in cleaning?
 
 <!-- answer below -->
-- Deleting the duplicate column and adding the missing columns
-- Rename columns
-- Reorder columns
-- Change data types: except for County, change State and Category columns to factor, and other columns to numeric
-- Correct values in County and State columns: remove extra spaces, fix typos, ensure consistent capitalization
-- Round numbers to the same number of decimal places
 
-3. Are there any differences between the messy dataset and the original dataset that you do not need or want to address in cleaning? If so, why (not)?
+-   Deleting the duplicate column and adding the missing columns
+-   Rename columns
+-   Reorder columns
+-   Change data types: except for County, change State and Category columns to factor, and other columns to numeric
+-   Correct values in County and State columns: remove extra spaces, fix typos, ensure consistent capitalization
+-   Round numbers to the same number of decimal places
+
+3.  Are there any differences between the messy dataset and the original dataset that you do not need or want to address in cleaning? If so, why (not)?
 
 <!-- answer below -->
-- Replacing data in "Population Density" with the ones in "Population per Sq Mile" is better than preserving the original data, since the latter uses consistent calculation unit and reduces misunderstanding.
-- Changing the State data type to factor instead of character is more useful when generating regression or ggplot. Since the column only contains 5 variables ("IL", "IN", "MI", "OH", "WI"), converting character to factor helps to analyse data by state/area.
-- For different numeric variables, the number of decimal places is also different. For variables that stored percentage of certain population, round numbers to 3 decimal places is enough to preserve accuracy of the data. For population density, rounding numbers to 1 decimal place makes sense statistically.
 
+-   Replacing data in "Population Density" with the ones in "Population per Sq Mile" is better than preserving the original data, since the latter uses consistent calculation unit and reduces misunderstanding.
+-   Changing the State data type to factor instead of character is more useful when generating regression or ggplot. Since the column only contains 5 variables ("IL", "IN", "MI", "OH", "WI"), converting character to factor helps to analyse data by state/area.
+-   For different numeric variables, the number of decimal places is also different. For variables that stored percentage of certain population, round numbers to 3 decimal places is enough to preserve accuracy of the data. For population density, rounding numbers to 1 decimal place makes sense statistically.
 
-4. Are there additional cleaning tasks you would like to perform beyond matching the original dataset? If so, what are they and why do you think they are important?
+4.  Are there additional cleaning tasks you would like to perform beyond matching the original dataset? If so, what are they and why do you think they are important?
 
 <!-- answer below -->
 
@@ -136,6 +133,7 @@ If you're not sure where to start, you can organize your cleaning into the follo
 You can additionally/alternatively construct your cleaning in a single pipeline in the last chunk.
 
 ## Creating a cleaning dataset
+
 ```{r}
 
 #| label: make-cleaning-dataset
@@ -144,7 +142,6 @@ You can additionally/alternatively construct your cleaning in a single pipeline 
 clean.midwest <- messy.midwest
 
 ```
-
 
 ## Selecting, renaming, and reordering columns
 
@@ -167,7 +164,6 @@ clean.midwest <- messy.midwest %>%
 
 ```
 
-
 ```{r}
 
 #| label: checkpoint-1-allequal
@@ -179,15 +175,15 @@ head(clean.midwest)
 all.equal(clean.midwest, midwest)
 
 ```
-Now we've got `r length(all.equal(clean.midwest, midwest))` flagged differences. 
-- The biggest difference now is still the data types.
-- We should also notice the remaining problems above: two variables percwhite and percblack haven't been created yet, and they need to be inserted between popother and percamerindian to put the columns in order. But this step can only be done after we after we change data types.
+
+Now we've got `r length(all.equal(clean.midwest, midwest))` flagged differences. - The biggest difference now is still the data types. - We should also notice the remaining problems above: two variables percwhite and percblack haven't been created yet, and they need to be inserted between popother and percamerindian to put the columns in order. But this step can only be done after we after we change data types.
 
 ## Changing data types and cleaning values
 
 ### Cleaning character variables: county, state, and category
 
 #### Cleaning county: clean values
+
 We start with tackling the character variables first. In question 2, we have decided to change State and Category variables into factor, and preserve County as a character variable.
 
 ```{r}
@@ -197,10 +193,8 @@ We start with tackling the character variables first. In question 2, we have dec
 unique(clean.midwest$county)
 
 ```
-Using the unique() function, we can see the data contains 3 types of error in general:
-- Extra spaces, both at the beginnings and ends of the values
-- Typos: "0" instead of letter "o", "1" instead of letter "l", and "3" instead of letter "e"
-- All values are in all lowercase, while everything is lower case in `midwest$county`
+
+Using the unique() function, we can see the data contains 3 types of error in general: - Extra spaces, both at the beginnings and ends of the values - Typos: "0" instead of letter "o", "1" instead of letter "l", and "3" instead of letter "e" - All values are in all lowercase, while everything is lower case in `midwest$county`
 
 We can primarily clean the data with these 3 patterns.
 
@@ -228,6 +222,7 @@ Now we can find the unique values that's left in the County column.
 # Use setdiff() to check the unique values of the County column in clean.midwest
 setdiff(clean.midwest$county, midwest$county)
 ```
+
 No problems left in the County column! Fortunately it is already a character variable, so no further procedure is needed for now.
 
 #### Cleaning state: clean values, convert data type to factor
@@ -241,10 +236,8 @@ In the next step we can deal with the State column. For State and Category colum
 unique(clean.midwest$state)
 
 ```
-We use the unique() function to check with value errors again, and find generally 3 issues:
-- Several values contain periods at the end of values
-- Inconsistent name of the same state. "Wis." and "Wisconsin" should be "WI",  "Mich." and "Michigan" should be "MI", "OHIO" and "Ohio" should be "OH", "Ind." and "Indiana" should be "IN", and "Ill." and "Illinois" should be "IL"
-- Inconsistent capitalization (all values are uppercase in midwest)
+
+We use the unique() function to check with value errors again, and find generally 3 issues: - Several values contain periods at the end of values - Inconsistent name of the same state. "Wis." and "Wisconsin" should be "WI", "Mich." and "Michigan" should be "MI", "OHIO" and "Ohio" should be "OH", "Ind." and "Indiana" should be "IN", and "Ill." and "Illinois" should be "IL" - Inconsistent capitalization (all values are uppercase in midwest)
 
 These 3 problems can be solved at the same time if we directly substitute the error state name with the correct ones. Now we can conduct data cleaning on the State column.
 
@@ -269,12 +262,14 @@ clean.midwest <- clean.midwest %>%
 ```
 
 Now let's check the unique values of state again:
+
 ```{r}
 #| label: unique-state-2
 
 unique(clean.midwest$state)
 
 ```
+
 The State column values are ideal now. We can convert this column into a factor for later data analysis. After converting data type, state becomes a factor variable with 5 levels: "IL", "IN", "MI", "OH", and "WI".
 
 ```{r}
@@ -288,6 +283,7 @@ clean.midwest <- clean.midwest %>%
 levels(clean.midwest$state)
 
 ```
+
 #### Cleaning category: clean values, convert data type to factor
 
 Lastly, we can examine the unique values in the Category column.
@@ -299,6 +295,7 @@ Lastly, we can examine the unique values in the Category column.
 unique(clean.midwest$category)
 
 ```
+
 The result indicates that there are no errors in column values. We can simply convert it to a factor with 10 levels: "AAR" "AAU" "AHR" "AHU" "ALR" "ALU" "HAR" "HAU" "HHR" "HHU" "HLR" "HLU" "LAR" "LAU" "LHR" "LHU"
 
 ```{r}
@@ -312,6 +309,7 @@ clean.midwest <- clean.midwest %>%
 levels(clean.midwest$category)
 
 ```
+
 Finally, after dealing with these three originally character variables, county, state, and category, we can once again check whether clean.midwest identifies with midwest.
 
 ```{r}
@@ -328,12 +326,12 @@ all.equal(clean.midwest, midwest)
 
 We can begin tackling with the rest variables containing numbers.
 
-## Cleaning numeric variables
+### Cleaning numeric variables
 
 Based on question 1-3, our basic logic of dealing with the numeric variables (although at this point they are stored as character in the messy dataset) is:
 
-- Data types should be numeric, not character
-- Numbers not rounded to the same number of decimal places (the decimal place number should also be distinct for different numeric variables )
+-   Data types should be numeric, not character
+-   Numbers not rounded to the same number of decimal places (the decimal place number should also be distinct for different numeric variables )
 
 ```{r}
 
@@ -366,81 +364,139 @@ render_diff(diff_data(clean.midwest.numeric, midwest))
 
 ```
 
-## Mutating data
+From the feedback we can see that the current clean dataset clean.midwest.numeric, some decimals in column percasian and percother that are close to zero in midwest return NA in clean.midwest.numeric. We have to compute them into 0.000.
 
 ```{r}
 
+#| label: adjust-NA-values
+
+clean.midwest.numeric <- clean.midwest.numeric %>%
+  mutate(
+    across(
+      c(percasian, percother),  
+      ~ if_else(is.na(.x), 0.000, .x)
+    )
+  )
+
 ```
 
+The remaining biggest problem is that columns "percwhite" and "percblack" that exist in midwest are still missing in the current working dataset, which also results in a mismatch in column order. In terms of mean difference (due to decimal place changes), data type difference, and column name adjustments, these are differences we tend to keep for clarification and convenience of further data analysis. So we can ignore these differences in future comparison.
 
-## Using stringr and forcats
+### Creating new variables: percwhite and percblack
+
+For this task, we need to first create perchite and percblack using calculation $$ Percentage \ of \ population = {Target \ population
+\over Total \ population} $$, and then insert them between column popother and column percamerindian.
+
+Start with creating new variables.
 
 ```{r}
 
+#| label: create-new-variables
+
+clean.midwest.all <- clean.midwest.numeric %>%
+  mutate(
+    # calculate the percentage of white and black population
+    percwhite = popwhite / poptotal * 100,
+    percblack = popblack / poptotal * 100
+  ) %>%
+    # round to 3 decimal place
+  mutate(
+    across(
+      c(percwhite, percblack),
+      ~ if_else(is.na(.), 0.000, round(., 3)) 
+    )
+  )
+
 ```
 
-
-## Other cleaning tasks
+Then we can insert these two new variables between popother and percamerindian.
 
 ```{r}
 
+#| label: insert-new-variables
+
+clean.midwest.all <- clean.midwest.all %>%
+  relocate(
+    # insert two variables after popother
+    percwhite, percblack, .after = popother 
+  )
+
 ```
-
-
-
 
 ## All cleaning in a single pipeline
-
 
 ```{r}
 
 #| label: one-pipeline
 
+clean.midwest.pipeline <- messy.midwest %>%
+  select(PID, county = `C0unty Name`, state = State, area_sqm = `Area (sq miles)`, 
+         poptotal = `Total P0pulation`, popdensity_persqm = `Population per Sq Mile`, popwhite,          popblack, popamerindian, popasian, popother, percamerindian = percamerindan,
+         percasian = `Percentage Asian`, percother, popadults = `Population Over 18`, 
+         perchsd, percollege = `Percentage College`, percprof, poppovertyknown,
+         percpovertyknown, percbelowpoverty = `Percentage Below Poverty`, 
+         percchildpoverty = percchildbelowpovert, percadultpoverty, percelderlypoverty,
+         inmetro, category)
+
 
 ```
-
-
 
 # Reflection
 
 QUESTIONS:
 
-1. Is your dataset identical to `midwest`? If not, what is different? (Remember the functions `all.equal()` and `diff_data()` can help here.)
+1.  Is your dataset identical to `midwest`? If not, what is different? (Remember the functions `all.equal()` and `diff_data()` can help here.)
 
 <!-- answer below -->
 
-2. Did you make any choices to clean the data that resulted in the dataset not matching the original? Why did you make those choices?
+```{r}
+
+#| label: checkpoint-4-compare
+
+all.equal(clean.midwest.all, midwest)
+render_diff(diff_data(clean.midwest.all, midwest))
+
+```
+
+The current dataset `clean.midwest.all` is different from `midwest`. 
+-   Column names including area_sqm (area), popdensity_persqm (popdensity), percamerindian (percamerindan), and percchildpoverty (percchildbelowpovert) are different. 
+-   Data type of column state and category is factor, not character. 
+-   Data in popdensity_persqm is from Population per Square Mile from `messy.midwest`, not the original data in popdensity. 
+-   Data in popdensity_persqm is round to 1 decimal place, and data of percentage variables is round to 3 decimal places.
+
+2.  Did you make any choices to clean the data that resulted in the dataset not matching the original? Why did you make those choices?
 
 <!-- answer below -->
 
-3. Were there any cleaning steps -- whether necessary to recreate the original df or just because you wanted to do them -- that you weren't able to implement? If so, what were they and what more would you need to do/know to implement them? 
+The differences mentioned above are all intentionally created. 
+-   Changes in column names are for informativity and clarity. For example, `area_sqm` is easier for other audience to grasp than `area` because the former contains unit of the variable. The name `percchildpoverty` shows consistency with `percadultpoverty` and `percelderlypoverty`, which is more suitable than `percchildbelowpovert`. 
+-   Converting `state` and `category` to factor is more convenient for researchers to conduct analysis based on levels or classes (e.g. comparison between states or between categories).
+-   Data in `popdensity_persqm` is consistent with the unit of variable `area_sqm` and will not cause misunderstanding.
+-   Rounding numeric variables to different decimal place is helpful for statistical computation. Preserving too much decimal places (like what `midwest` did) is not effective.
+
+3.  Were there any cleaning steps -- whether necessary to recreate the original df or just because you wanted to do them -- that you weren't able to implement? If so, what were they and what more would you need to do/know to implement them?
 
 <!-- answer below -->
-
 
 # Unguided cleaning and transformation
 
 *Optional:* If you have the time and interest, continue transforming this dataset as you please. Create new columns based on the existing ones, reformat strings, try your hand at a regex replacement, summarize by groups (factor levels), visualize a simple relationship, or anything else you can think of. To get you started, consider things like:
 
-1. **Exploratory Data Analysis:** Use the cleaned dataset to explore relationships between variables, create visualizations, and generate insights.
-2. **Data Transformation:** Create new variables, aggregate data, or reshape the dataset to prepare it for analysis.
-3. **Split, Merge, and Reshape:** Split the dataset into multiple datasets or merge it with other datasets using `join` functions to create a new dataset. Use `pivot_longer()` and `pivot_wider()` to reshape the data.
-4. **Informativity:** Consider the midwest data and its documentation. Clean/transform the dataframe into a format that is more informative, transparent, or easier to work with. For example, improve column naming conventions, create new (useful) variables, reduce redundancy, or eliminate variables that are not useful or documented.
-
+1.  **Exploratory Data Analysis:** Use the cleaned dataset to explore relationships between variables, create visualizations, and generate insights.
+2.  **Data Transformation:** Create new variables, aggregate data, or reshape the dataset to prepare it for analysis.
+3.  **Split, Merge, and Reshape:** Split the dataset into multiple datasets or merge it with other datasets using `join` functions to create a new dataset. Use `pivot_longer()` and `pivot_wider()` to reshape the data.
+4.  **Informativity:** Consider the midwest data and its documentation. Clean/transform the dataframe into a format that is more informative, transparent, or easier to work with. For example, improve column naming conventions, create new (useful) variables, reduce redundancy, or eliminate variables that are not useful or documented.
 
 # Submission & Assessment
 
 To submit:
 
-1. Add an `assessment.md` file to this mini-project's directory:
-    1. Check off all objectives you believe you have demonstrated
-    2. Indicate which unique objectives you are meeting for the first time (if any)
-    3. Complete any relevant open-ended items
-2. Push your changes to your centralized assignment repository on GitHub. 
-3. Confirm that Dr. Dowling and your section TA are added as collaborators to your repository.
-4. Submit your work in your next open mini-project assignment by including the following information in the text box:
-    1. The title of the assignment: "Level 2 Data Cleaning: Clean the midwest Dataset"
-    2. A link to the **directory** for this assignment in your centralized assignment repo
-
-
-
+1.  Add an `assessment.md` file to this mini-project's directory:
+    1.  Check off all objectives you believe you have demonstrated
+    2.  Indicate which unique objectives you are meeting for the first time (if any)
+    3.  Complete any relevant open-ended items
+2.  Push your changes to your centralized assignment repository on GitHub.
+3.  Confirm that Dr. Dowling and your section TA are added as collaborators to your repository.
+4.  Submit your work in your next open mini-project assignment by including the following information in the text box:
+    1.  The title of the assignment: "Level 2 Data Cleaning: Clean the midwest Dataset"
+    2.  A link to the **directory** for this assignment in your centralized assignment repo
