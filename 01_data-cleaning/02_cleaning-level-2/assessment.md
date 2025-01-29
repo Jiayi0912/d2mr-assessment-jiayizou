@@ -21,7 +21,7 @@ Mini-project title: Level 2 Data Cleaning: Clean the midwest Dataset
 
 Submission date:
 
-Project GitHub subdirectory URL: https://github.com/Jiayi0912/d2mr-assessment-jiayizou/tree/e2ee5cd952ccbce2dbccff6a1b3fb9698a5c0152/01_data-cleaning/02_cleaning-level-2
+Project GitHub subdirectory URL: https://github.com/Jiayi0912/d2mr-assessment-jiayizou/tree/main/01_data-cleaning/02_cleaning-level-2
 
 URL or instructions to access additional materials, if needed: 
 
