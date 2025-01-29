@@ -545,6 +545,22 @@ The differences mentioned above are all intentionally created.
 1.  **Exploratory Data Analysis:** Use the cleaned dataset to explore relationships between variables, create visualizations, and generate insights.
 2.  **Data Transformation:** Create new variables, aggregate data, or reshape the dataset to prepare it for analysis.
 3.  **Split, Merge, and Reshape:** Split the dataset into multiple datasets or merge it with other datasets using `join` functions to create a new dataset. Use `pivot_longer()` and `pivot_wider()` to reshape the data.
+
+```{r}
+clean.midwest.long <- clean.midwest.all %>%
+    pivot_longer(cols = c("percchildpoverty", "percadultpoverty", "percelderlypoverty"),
+                 # convert three poverty percentages of different age group in to one column
+                 names_to = "poverty_agegroup", 
+                 values_to = "percentage_agegroup")
+
+
+# pivot long to wide; back to where it started
+clean.midwest.wide <- clean.midwest.long %>% 
+    pivot_wider(names_from = "poverty_agegroup", values_from = "percentage_agegroup") %>% 
+    # Relocate inmetro and category, keeping them in the right order
+    relocate(c(inmetro, category),.after = last_col())
+```
+
 4.  **Informativity:** Consider the midwest data and its documentation. Clean/transform the dataframe into a format that is more informative, transparent, or easier to work with. For example, improve column naming conventions, create new (useful) variables, reduce redundancy, or eliminate variables that are not useful or documented.
 
 # Submission & Assessment
