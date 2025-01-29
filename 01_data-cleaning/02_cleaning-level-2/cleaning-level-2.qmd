@@ -152,12 +152,13 @@ clean.midwest <- messy.midwest
 ## Put them in the order of the original dataset
 clean.midwest <- messy.midwest %>%
   select(PID, county = `C0unty Name`, state = State, area_sqm = `Area (sq miles)`, 
-         poptotal = `Total P0pulation`, popdensity_persqm = `Population per Sq Mile`, popwhite, 
-         popblack, popamerindian, popasian, popother,percamerindian = percamerindan, 
+         poptotal = `Total P0pulation`, popdensity_persqm = `Population per Sq Mile`, 
+         popwhite, popblack, popamerindian, popasian, popother, percamerindian = percamerindan,
          percasian = `Percentage Asian`, percother, popadults = `Population Over 18`, perchsd, 
          percollege = `Percentage College`, percprof, poppovertyknown, percpovertyknown, 
-         percbelowpoverty = `Percentage Below Poverty`, percchildpoverty = percchildbelowpovert, 
-         percadultpoverty, percelderlypoverty, inmetro, category)
+         percbelowpoverty = `Percentage Below Poverty`, 
+         percchildpoverty = percchildbelowpovert, percadultpoverty, percelderlypoverty, 
+         inmetro, category)
 
 # In this way, the duplicate column "Population Density" is deleted, because we want to preserve data in "Population per Sq Mile"
 # Current column order still misses two variables: percwhite and percblack
@@ -210,7 +211,7 @@ clean.midwest <- clean.midwest %>%
         # Replace 0 with o, 1 with l, 3 with e
         county = str_replace_all(county, c("0" = "o", "1" = "l", "3" = "e")),
         # Convert to uppercase
-        county = str_to_upper(county),
+        county = str_to_upper(county)
     )
 ```
 
@@ -436,10 +437,66 @@ clean.midwest.pipeline <- messy.midwest %>%
          perchsd, percollege = `Percentage College`, percprof, poppovertyknown,
          percpovertyknown, percbelowpoverty = `Percentage Below Poverty`, 
          percchildpoverty = percchildbelowpovert, percadultpoverty, percelderlypoverty,
-         inmetro, category)
-
+         inmetro, category) %>%
+  mutate(
+        county = str_squish(county), 
+        county = str_replace_all(county, c("0" = "o", "1" = "l", "3" = "e")),
+        county = str_to_upper(county)
+  ) %>%
+  mutate(
+        state = str_replace_all(state, "Wisconsin|Wis\\.", "WI"),
+        state = str_replace_all(state, "Michigan|Mich\\.", "MI"),
+        state = str_replace_all(state, "OHIO|Ohio", "OH"),
+        state = str_replace_all(state, "Indiana|Ind\\.", "IN"),
+        state = str_replace_all(state, "Illinois|Ill\\.", "IL")
+  ) %>%
+  mutate(
+        state = factor(state),
+        category = factor(category)
+  ) %>%
+  mutate(across(c(1, 4:25), ~ parse_number(.x))) %>%
+  mutate(
+        area_sqm = round(area_sqm, 3), 
+        popdensity_persqm = round(popdensity_persqm, 1),
+        across(
+          c(percamerindian, percasian, percother, perchsd, percollege, 
+                 percprof, percpovertyknown, percbelowpoverty, percchildpoverty, 
+                 percadultpoverty, percelderlypoverty), ~ round(.x, 3))
+  ) %>%
+  mutate(
+    across(
+      c(percasian, percother),  
+      ~ if_else(is.na(.x), 0.000, .x)
+    )
+  ) %>%
+  mutate(
+    percwhite = popwhite / poptotal * 100,
+    percblack = popblack / poptotal * 100
+  ) %>%
+  mutate(
+    across(
+      c(percwhite, percblack),
+      ~ if_else(is.na(.), 0.000, round(., 3)) 
+    )
+  ) %>%
+  relocate(
+    percwhite, percblack, .after = popother 
+  )
 
 ```
+
+We can compare `clean.midwest.pipeline` with `clean.midwest.all`.
+
+```{r}
+
+#| label: checkpoint-4-compare
+
+all.equal(clean.midwest.pipeline, clean.midwest.all)
+render_diff(diff_data(clean.midwest.pipeline, clean.midwest.all))
+
+```
+They are identical!
+
 
 # Reflection
 
@@ -451,7 +508,7 @@ QUESTIONS:
 
 ```{r}
 
-#| label: checkpoint-4-compare
+#| label: checkpoint-5-compare
 
 all.equal(clean.midwest.all, midwest)
 render_diff(diff_data(clean.midwest.all, midwest))
@@ -477,6 +534,9 @@ The differences mentioned above are all intentionally created.
 3.  Were there any cleaning steps -- whether necessary to recreate the original df or just because you wanted to do them -- that you weren't able to implement? If so, what were they and what more would you need to do/know to implement them?
 
 <!-- answer below -->
+-   When rounding decimal place, I didn't realize that value 0 would return NA in the new dataframe, which might cause problems when computing mean value or regression in later data analysis. A better approach would be using `summary()` function to check the minimum of the variable and then clean the data, so that we won't miss value 0 or NA.
+-   Conducting a clean dataset using one-pipeline method is actually more challenging than I thought. The pipeline would be unable to fundtion if we miss a certain character such as ")" (and this error can frequently happen when we are trying to merge every code chunk together.) I wonder there's any tips that can help compute the pipeline without doing paste-copy every time, such as selecting the target chunks and merge them together.
+
 
 # Unguided cleaning and transformation
 
