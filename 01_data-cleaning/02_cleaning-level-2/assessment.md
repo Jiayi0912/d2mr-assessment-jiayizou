@@ -32,7 +32,7 @@ URL or instructions to access additional materials, if needed:
     1. Direct collaborators (students who will be turning in a version of the same project) and their contributions:
     2. General support (students who helped you with debugging, conceptual understanding, or the like) and their contributions:
 2. Did you use LLMs or other AI models to generate text or code for this project? If so, which tools did you use and how did you use them? Remember in this class you *are* allowed (even encouraged) to use these tools for help with coding, but not for writing text. This can be very brief, just one or two sentences is fine unless you have more you'd like to add.
-    1. answer here 
+    1. I used ChatGPT to help me with simplifying the mutate pipeline, such as adding ifelse condition in across().
 3. For off-the-menu projects only, did you complete the project as proposed? If not, what changed?
     1. answer here or n/a
 
@@ -82,8 +82,8 @@ Below each learning objective is a list of general expectations for meeting that
     1.  Used frequent, informative commit messages
     2.  Relies on document revisions rather than manually created new versions
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -94,8 +94,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. No errors occur when running scripts in a new environment and/or comments sufficiently explain package installation requirements
     2. Uses more than one function to install/load/require packages
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -104,8 +104,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses all three types of operators
     2. Uses multiple operators in data transformation pipelines and/or inline R code
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -125,8 +125,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses conditional in multiple contexts, including dplyr pipelines
     2. Uses multiple types of conditional/loop functions (e.g., `if_else()`, `case_when()`, `for`, `while`)
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -137,8 +137,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Reads in data from at least one source in code chunk or sourced script
     2. Writes out intermediate and/or final datasets in code chunks or sourced scripts
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -148,8 +148,8 @@ Below each learning objective is a list of general expectations for meeting that
     2. Uses at least 1 `tidyr` function in a data transformation pipeline
     3. Combines `dplyr` and `tidyr` functions in a data transformation pipeline
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -158,8 +158,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses ate least 2 unique `stringr` functions 
     2. Uses `stringr` functions in a data transformation pipeline
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -168,8 +168,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses ate least 2 unique `forcats` functions or one function in 2 unique contexts (with different purposes)
     2. Uses `forcats` functions in a data transformation pipeline
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [1] Objective attempt
+        -   [1] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -425,7 +425,21 @@ You are not required to demonstrate these objectives in your independent project
 If you believe you have demonstrated any of the above skills sufficiently to count toward the 20 additional objectives-based points, please indicate which objective(s) you believe you have met and provide a brief explanation of how you have met each objective.
 
 <!-- Explanation of demonstrated unassessed objectives below this line -->
-
+1.  use frequent, informative comments in code and markdown
+-   In the qmd file, I have used comments to explain the purpose of each code chunk and the code inside the chunk. For example, in Chunk 18 , I have used comments to explain each step in the mutate pipeline to differentiate decimal place for different variables.
+2.  find and understand documentation for R packages and functions
+-   I have frequently used the help function to find the documentation for the `mutate` function in the dplyr package. I have also used the help function to find the documentation for the `select` function.
+4.  parse and investigate error messages
+-   When inserting new variables into the original column order, I have encountered an error message when I tried to use the `select` function to create a new variable. 
+I have investigated the error message and found that the error was caused by the incorrect use of the `select` function. I have fixed the error by using `relocate`.
+6.  customize RStudio
+-   I don't know how to show this, but I have customized the RStudio to the Pastel on Dark theme and Lucida font (Tools - Global Options- Appearance), which is pretty cool!
+9.  create and use intermediate datasets
+-   I have created intermediate datasets including `clean.midwest`, `clean.midwest.numeric`, and `clean.midwest.pipeline`.
+12. name and differentiate R data types
+13. name and differentiate R objects
+14. define “tidy” data and explain its advantages and disadvantages
+-   12-14 are all listed in the #Setup section of the qmd file. I have explained the data types of the variables in the dataset, the objects I have created, and the goal of tidy data format.
 
 <!-- Explanation of demonstrated unassessed objectives above this line -->
 
