@@ -84,7 +84,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [1] Objective attempt
         -   [1] Unique objective attempt
-        -   [ ] Objective met
+        -   [X] Objective met
         -   Grader comments:
 
 ### R programming
@@ -96,8 +96,9 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [1] Objective attempt
         -   [1] Unique objective attempt
-        -   [ ] Objective met
-        -   Grader comments:
+        -   [X] Objective met
+        -   Grader comments: Note that only one function was used in the code, `library`. Consider `if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)`
 
 6.  Use arithmetic, comparison, and logical operators
 
@@ -106,7 +107,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [1] Objective attempt
         -   [1] Unique objective attempt
-        -   [ ] Objective met
+        -   [X] Objective met
         -   Grader comments:
 
 7.  Parse and define functions and arguments
@@ -127,7 +128,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [1] Objective attempt
         -   [1] Unique objective attempt
-        -   [ ] Objective met
+        -   [X] Objective met
         -   Grader comments:
 
 ### Tidyverse
@@ -140,7 +141,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [1] Objective attempt
         -   [1] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: The script does not show the attempt to write out data in code chunks, such as using `write_csv`.
 
 10. Use `dplyr` and `tidyr` functions to transform data
 
@@ -150,7 +151,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [1] Objective attempt
         -   [1] Unique objective attempt
-        -   [ ] Objective met
+        -   [X] Objective met
         -   Grader comments:
 
 11. Use `stringr` functions to work with string variables
@@ -160,7 +161,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [1] Objective attempt
         -   [1] Unique objective attempt
-        -   [ ] Objective met
+        -   [X] Objective met
         -   Grader comments:
 
 12. Use `forcats` functions to work with factor variables
@@ -171,7 +172,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [1] Objective attempt
         -   [1] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: The code does not explicitly use `forcats` functions.
 
 ### Data visualization with ggplot2
 
@@ -474,13 +475,13 @@ Thoughtful reflections may earn engagement points.
 
 ## Grader feedback
 
--   Grader:
--   Date:
--   Points toward unique objectives (up to 20):
--   Additional points (up to 20):
--   TA provisional engagement points (up to 10):
+-   Grader: Mian
+-   Date: Feb 5, 2025
+-   Points toward unique objectives (up to 20): 6
+-   Additional points (up to 20): 8
+-   TA provisional engagement points (up to 10): 2
 -   Final approved engagement points (up to 10):
--   Total points (up to 50):
+-   Total points (up to 50): 16
 
 Engagement points are awarded for going above and beyond the expectations of the project and are not guaranteed on any given submission.. Demonstrating the assessed learning objectives earns you points in those categories, but engagement points are awarded for exceptional effort, creativity, or skill.
 
